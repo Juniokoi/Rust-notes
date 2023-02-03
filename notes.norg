@@ -1,0 +1,322 @@
+* Content
+  yay
+
+** Strings
+   There is the type of string and the object. The type `&std` has its uses but generally is the `String` that is used.
+   Ok, so how we can use it?
+*** String object and literal
+
+	@code rust
+ let str:&str = "Common string";
+ let str = String::new(); // Object can be a builder
+ let str = String::from("Base string");
+
+ let replace_from = "string";
+ let replace_to = "Programming";
+ let result = str.replace(replace_from,replace_to);
+ println!("{str} now becomes {result}");/// Base string now becomes Base Programming
+
+ let string = "    Rust    Programming     ".to_string(); // Now `string` is a object
+ let trim_string = string.trim();/// Rust    Programming
+	@end
+
+	One of the only common method between string *literals* and string *object* are the `len()` method
+*** Splits functions
+**** Split_whitespace
+	 @code rust
+  let str = String::from("Rust Programming")
+  for token in str.split_whitespace() {
+	  println!("{token}");
+  }
+  // Rust
+  // Programming
+	 @end
+
+**** Split (by char)
+	 @code rust
+  let str = String::from("Educative, course on, Rust, Programming");
+  // split on token
+  for token in str.split(","){
+	  println!("{}", token);
+  }
+	 @end
+
+**** Split chars
+	 @code rust
+  let found = "yay";
+  for found in str.chars() {
+	  println!("{}", found);
+  }
+  // y, a, y
+	 @end
+
+*** String object operations
+
+**** push -- character
+	 first, the variable *must* be mutable (or otherwise will error)
+	 second, with this you can only push /only one Unicode character/
+	 @code rust
+  let mut house = String::from("I love my house <");
+  course.push(">");
+  println!("{course}"); /// I love my house <3
+	 @end
+	 ---
+**** push_str -- whole string
+	 Same thing but now you are able to join more Unicode characters
+
+	 @code rust
+  let mut house = String::from("I love my ");
+  course.push_str("house <3");
+  println!("{course}"); /// I love my house <3
+	 @end
+	 ---
+**** format! -- Macro
+	 With this macro we can join one or more /String objects/ together. It also can
+	 take variables or values and merge them in a single String
+	 @code rust
+  let course = "Rust".to_string();
+  let _course_type = "beginner course".to_string();
+  // default format macro 
+  let result = format!("{} {}", course, _course_type);
+  // passing value in the placeholder in the format macro 
+  let result = format!("{1} {0}", course,_course_type);
+  println!("{}", result);
+	 @end
+
+	 ---
+*** Slice
+	The main principle of slide is set an range for a string you want
+	*Syntax:*
+	@code rust
+ let slice = &string[start_index..end_index]
+	@end
+	> OBS: Start_index is incluse while end_index is exclusive
+	> Also note on the two dots ..
+*** Strings and functions
+
+**** literals
+	 They are great for it, can be used, reused and nothings happens.
+
+**** Object
+	 But with object another is story
+	 They can be send to functions normally, but *cannot* be /reused/
+	 this is because of something called ,Ownership, that will be discussed later
+** Macros
+   Macros has to ability to create code and avoid repetitive tasks that differs from functions by not only output code
+   but also process
+*** Attributes:
+	`item` — an item, like a function, struct, module, etc.
+	`block` — a block /(i.e. a block of statements and/or an expression, surrounded by braces)/
+	`stmt` — a statement
+	`pat` — a pattern
+	`expr` — an expression
+	`ty` — a type
+	`ident` — an identifier
+	`path` — a path /(e.g., `foo`, `::std::mem::replace`, `transmute::<_, int>, …)`/
+	`meta` — a meta item; the things that go inside `#[...]` and `#![...]` attributes
+	`tt` — a single token tree
+	`vis` — a possibly empty Visibility qualifier
+*** Using types
+	@code rust
+macro_rules! add_as{
+	 // using a ty token type for matching datatypes passed to macro
+	($a:expr,$b:expr,$typ:ty)=>{
+		 $a as $typ + $b as $typ
+	 }
+ }
+
+ fn main(){
+	 println!("{}",add_as!(0,2,u8));
+ }
+	@end
+*** wildcards (*, +)
+	Just like regex, macros also offer support for wildcards
+	\* - for one or more characters
+	\+ - form one or one character
+	Example:
+	@code rust
+ macro_rules! add_as{
+	 (
+	 // repeated block
+	 $($a:expr)
+	 // seperator
+	 ,
+	 // zero or more
+	 *
+ )=>{
+		 { 
+			 // to handle the case without any arguments
+			 0
+			 // block to be repeated
+			 $(+$a)*
+		 }
+	 }
+ }
+
+ fn main(){
+	 println!("{}",add_as!(1,2,3,4)); // => println!("{}",{0+1+2+3+4})
+ }
+	@end
+
+	The token type that repeats is enclosed in `$(),` followed by a separator and a * or a +,
+	indicating the number of times the token will repeat. The separator is used to distinguish
+	the tokens from each other. The `$()` block followed by * or + is used to indicate the repeating
+	block of code. In the above example, `+$a` is a repeating code.
+
+*** Hmm macros to hard by now, better study more the other things
+    yy
+    
+    
+** Vec
+   vectors are like an array but with flexible size (and is a macro)
+   its more often used compared to arrays because of its modality.
+   Vec::new() :: Creates a new vector
+   .push() :: push a value
+   .pop()  :: pop a value
+   .contains()
+   .remove(,index,)
+   .len()
+   .capacity() :: more useful for arrays but they exist for vec too
+   .iter()
+   .position(|&e| e == element_name)// let element_name = 3
+   .unwrap() // Got to see this later
+   @code rust
+   for x in my_vec.iter_mut(){
+       *x *= 3;
+   }
+   @end
+   .iter_mut() allows to mut the iterable item
+
+** Structs
+   - Are like OOP class but dried
+   - Name must be PascalCase
+   - It can be used as a type... just like a class
+   - can access items through ,., `StructStruct.name`
+   - they can also have methods :: impl StructName {fn methodName(&self){ self.name }}
+   - When in params, it uses the keyword `self` to reference to struct :: `StructStruct.methodName();`
+   - *STATICC* happens when you use double colon like StructStruct::methodName();, this way you dont need to cast first
+   - Structs can also be used as tuples `struct StructTuple(datatype3,datatype2,datatype1)`
+
+** ENUMS
+   they are set of variables that dont change and is used as reference. 
+   - They are static (since you can't instanciate a enum... i think)
+   - enum KnightMove = {Horizontal, Vertical }; let VerticalMove = KnightMove::Vertical; let HorizontalMove =  KnightMove::Horizontal
+   - but enums can also have types
+   - enum KnightMove = {Horizontal(String), Vertical(i32)}; let VerticalMove = KnightMove::Vertical("Down".to_string());
+   - Can also have methods
+   @code rust
+   enum TrafficSignal{
+	   Red, Green, Yellow
+   }
+   //implement a Traffic Signal methods
+   impl TrafficSignal{
+   // if the signal is red then return
+   fn is_stop(&self)->bool{
+	   match self{
+		   TrafficSignal::Red=>return true,
+		   _=>return false
+	   }
+   }
+   fn main(){
+   // define an enum instance
+   let action = TrafficSignal::Red;
+   //print the value of action
+   println!("What is the signal value? - {:?}", action);
+   //invoke the enum method 'is_stop' and print the value
+   println!("Do we have to stop at signal? - {}", action.is_stop());
+   @end
+   - Aparently you can instanciate enums
+   @code rust
+   enum KnightMove
+   Horizontal,Vertical
+}
+   // print function 
+   fn print_direction(direction:KnightMove) {
+	   // match statement
+	   match direction {
+		   //execute if knight move is horizontal
+		   KnightMove::Horizontal => {
+			   println!("Move in horizontal direction");
+		   },
+		   //execute if knight move is vertical
+		   KnightMove::Vertical => {
+			   println!("Move in vertical direction");
+		   }
+	   }
+   }
+   fn main() {
+   // invoke function `print_direction`
+   let knight1 = KnightMove::Horizontal;
+   let knight2 = KnightMove::Vertical;
+   print_direction(knight1);
+   print_direction(knight2);
+   @end
+
+** Structs or enums?
+   Structs are more for like classes, because an Struct can have a param with an enum type, while the inverse is not possible
+   @code rust
+   #[derive(Debug)]
+   //define an enum
+   enum KnightMove{
+	   Horizontal, Vertical
+   }
+   #[derive(Debug)]
+   // make this `struct` print values of type `enum`  with `fmt::Debug`.
+   struct Player {
+	   color:String,
+	   knight:KnightMove
+   }
+   @end
+
+** Option
+   It return Some(T) or None, since there isn't null in Rust
+   Option can be used anywhere
+   - it has a method called *is_some()* that says if has or not the set value
+   - if has returns true, else, false.
+   @code rust
+   fn main() {
+	   let my_val: Option<&str> = Some("Rust Programming!");
+	   print(my_val); // invoke the function
+
+   }
+   fn print(my_val: Option<&str>){
+   if my_val.is_some(){ // check if the value is equal to some value
+	   println!("my_val is equal to some value");
+   }
+   else{
+	   println!("my_val is equal to none");
+   }
+   @end
+   Option values can be obtained by using *.unwrap_or()*
+
+** 123, Testing...
+   @code rust
+   assert_eq!(value1, value2); // If [eq]ual returns true
+   assert_ne!(value1, value2); // If [n]ot [e]qual returns true
+
+   fn main() {
+	   let my_val: Option<&str> = Some("Rust Programming!");
+	   // pass since my_val is set to some value so left is true, and right is also true
+	   assert_eq!(my_val.is_some(), true); 
+	   // pass since my_val is set to some value so left is false, and right is also false
+	   assert_eq!(my_val.is_none(), false);
+   }
+   @end
+
+** Result
+   Not everything has to be None if gone wrong. There is a special enum
+   @code rust
+   enum Result(T,E) {
+	   Ok(T),
+	   Err(E)
+   }
+   @end
+   Is simple like that. If goes ok it return the expected result, otherwise it loads an error message
+   this could be like an try_catch, since if error triggers it doens't stop the compiling/program
+   - Result can be used when an error can be expected, like API call or User Input
+     just like Option<>, Result also has method checkers like *is_ok()* and *is_err()*
+
+
+
+
+

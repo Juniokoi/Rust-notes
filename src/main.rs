@@ -1,31 +1,27 @@
-mod examples;
-mod challenges;
-mod utils;
-
-/// This is a Doc comment outside the function
-/// Generate docs for the following item.
-/// This shows my code outside a module or a function
+#![allow(dead_code)]
 fn main() {
-use std::env;
+    let weekday = Days::Wednesday;
+    let weekend = Days::Saturday;
+	assert_eq!(weekday.is_weekend(), 0);
+	assert_eq!(weekend.is_weekend(), 1);
 
-    for argument in env::args() {
-        match argument.as_str() {
-            "variables" => examples::variables::run(),
-            "datatypes" => examples::datatypes::run(),
-            "conditional_loops" => examples::conditional_loops::run(),
-            "functions" => examples::functions::run(),
-            "arrays" => examples::arrays::run(),
-            "challenges" => challenges::run(),
-            "all" => {
-                examples::variables::run();
-                examples::datatypes::run();
-                examples::conditional_loops::run();
-                examples::arrays::run();
-                examples::functions::run();
-                challenges::run();
-            }
-            _ => println!("{argument} is not a valid argument"),
-        }
-    }
-
+	assert_ne!(weekday.is_weekend(), 1);
+	assert_ne!(weekend.is_weekend(), 0);
+}
+enum Days {
+	Monday,
+	Tuesday,
+	Wednesday,
+	Thursday,
+	Friday,
+	Saturday,
+	Sunday,
+}
+impl Days {
+	fn is_weekend(&self) -> i32 {
+		match self {
+			Self::Sunday | Self::Saturday => 1,
+			_ => 0,
+		}
+	}
 }

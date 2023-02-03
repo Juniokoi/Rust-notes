@@ -1,0 +1,39 @@
+* Challenges
+  proposed by ~educative.edu~
+
+** Strings
+   *Input:* `s String`
+   *Output:* `Output updated string`
+   Sample Input:
+   `"This is a comprehensive course in Rust programming language on the Educative.
+   Read it with full concentration to grasp the content of the course"`
+   Sample Output:
+   `comprehensive course concentration content course`
+   @code rust
+   fn main() {
+	   print!(
+		   "{}",
+		   test(String::from(
+			   "This is a comprehensive course in Rust programming language on the Educative. Read it \
+				   with full concentration to grasp the content of the course"
+		   ))
+	   );
+   }
+
+   fn test(my_str: String) -> String {
+   let mut res = String::new();
+   for v in my_str.split_whitespace() {
+	   if v.starts_with('c') {
+		   if !res.is_empty() {
+			   res.push(' ');
+		   }
+	   res.push_str(v);
+	   };
+   }
+
+   return res
+   @end
+
+** Vectors
+
+

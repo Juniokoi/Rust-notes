@@ -1,0 +1,18 @@
+color = "Always"
+control_brace_style  = "ClosingNextLine"
+empty_item_single_line = true
+enum_discrim_align_threshold = 20
+fn_single_line = true
+format_macro_matchers = true
+format_strings = true
+hard_tabs = true
+hex_literal_case = "Upper"
+match_arm_blocks = false
+imports_indent = "Visual"
+indent_style = "Visual"
+tab_spaces = 4
+trailing_semicolon = true
+spaces_around_ranges = true
+where_single_line = true
+wrap_comments = true
+
